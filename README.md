@@ -1,10 +1,11 @@
 <div align="center">
+  <p style="font-size: 48px; font-weight: 600">React Native</p>
   <img src="./logo/logo-web.svg" width="348.61" height="100" alt="SVGO logo"/>
 </div>
 
-## SVGO [![npm version](https://img.shields.io/npm/v/svgo)](https://npmjs.org/package/svgo) [![Discord](https://img.shields.io/discord/815166721315831868)](https://discord.gg/z8jX8NYxrE)
+## React Nativo SVGO
 
-**SVG O**ptimizer is a Node.js-based tool for optimizing SVG vector graphics files.
+`**SVG O**ptimizer is a Node.js-based tool for optimizing SVG vector graphics files. This fork adds support for installing and using this package on React Native environments.
 
 ## Why?
 
@@ -14,36 +15,26 @@ SVG files, especially those exported from various editors, usually contain a lot
 
 Via npm:
 ```sh
-npm -g install svgo
+npm install https://github.com/the-curve-consulting/react-native-svgo
 ```
 Via yarn:
 ```sh
-yarn global add svgo
+yarn add https://github.com/the-curve-consulting/react-native-svgo
 ```
 
 ## CLI usage
 
-Processing single files:
-```sh
-svgo one.svg two.svg -o one.min.svg two.min.svg
-```
-Processing directory of svg files, recursively using `-f`, `--folder`:
-```sh
-svgo -f ./path/to/folder/with/svg/files -o ./path/to/folder/with/svg/output
-```
-Help for advanced usage:
-```sh
-svgo --help
-```
+**Support for CLI has been dropeed on this specific package. If you need CLI support please use the original [svgo](https://npmjs.org/package/svgo) instead.**
 
 ## Configuration
 
 SVGO has a plugin-based architecture, separate plugins allows various xml svg optimizations. See [built-in plugins](#built-in-plugins).
-SVGO automatically loads configuration from `svgo.config.js` or from `--config ./path/myconfig.js`. Some general options can be configured via CLI.
+Configurations can be passed as the second argument of the [`optimize`](#optimize) API.
 
 ```js
-// svgo.config.js
-module.exports = {
+import { optimize, Config } from 'react-native-svgo';
+
+const config: Config = {
   multipass: true, // boolean. false by default
   datauri: 'enc', // 'base64' (default), 'enc' or 'unenc'.
   js2svg: {
@@ -66,6 +57,8 @@ module.exports = {
     },
   ],
 };
+
+// const optimizedSvgString = optimize('...', config);
 ```
 
 ### Default preset
@@ -74,7 +67,9 @@ When extending default configuration specify `preset-default` plugin to enable o
 Each plugin of default preset can be disabled or configured with "overrides" param.
 
 ```js
-module.exports = {
+import { Config } from 'react-native-svgo';
+
+const config: Config = {
   plugins: [
     {
       name: 'preset-default',
@@ -101,8 +96,10 @@ The default preset includes plugins marked with 'Yes' in the [plugin list](#buil
 It's also possible to specify a custom plugin:
 
 ```js
-const anotherCustomPlugin = require('./another-custom-plugin.js');
-module.exports = {
+import { Config } from 'react-native-svgo';
+import anotherCustomPlugin from './another-custom-plugin.js';
+
+const config: Config = {
   plugins: [
     {
       name: 'customPluginName',
@@ -118,35 +115,21 @@ module.exports = {
 
 ## API usage
 
-SVGO provides a few low level utilities.
-
 ### optimize
 
 The core of SVGO is `optimize` function.
 
 ```js
-const { optimize } = require('svgo');
+import { optimize } from 'react-native-svgo';
+
 const result = optimize(svgString, {
   // optional but recommended field
   path: 'path-to.svg',
   // all config fields are also available here
   multipass: true,
 });
+
 const optimizedSvgString = result.data;
-```
-
-### loadConfig
-
-If you write a tool on top of SVGO you might need a way to load SVGO config.
-
-```js
-const { loadConfig } = require('svgo');
-const config = await loadConfig();
-```
-
-You can also specify a relative or absolute path and customize the current working directory.
-```js
-const config = await loadConfig(configFile, cwd);
 ```
 
 ## Troubleshooting
