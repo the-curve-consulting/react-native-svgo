@@ -5,7 +5,7 @@
 
 ## React Nativo SVGO
 
-`**SVG O**ptimizer is a Node.js-based tool for optimizing SVG vector graphics files. This fork adds support for installing and using this package on React Native environments.
+**SVG O**ptimizer is a Node.js-based tool for optimizing SVG vector graphics files. This fork adds support for installing and using this package on React Native environments.
 
 ## Why?
 
